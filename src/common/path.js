@@ -5,9 +5,17 @@
  */
 
 import Path from 'path'
+import Fs from 'fs'
 
 export default {
-  JoinApp: (...arg) => {
+  joinApp(...arg) {
     return Path.join(process.cwd(), ...arg)
+  },
+  exists(path) {
+    return new Promise(resolve => {
+      Fs.stat(path, (err, stats) => {
+        resolve(err == null)
+      })
+    })
   }
 }
