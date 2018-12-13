@@ -6,6 +6,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Path = _interopDefault(require('path'));
 var Fs = _interopDefault(require('fs'));
+var Os = _interopDefault(require('os'));
+var Net = _interopDefault(require('net'));
 
 /**
  * @file path
@@ -22,11 +24,68 @@ var path = {
   },
   exists: function exists(path) {
     return new Promise(function (resolve) {
-      Fs.stat(path, function (err, stats) {
+      Fs.stat(path, function (err) {
         resolve(err == null);
       });
     });
   }
+};
+
+/**
+ * @file ip
+ * @author xiaozhihua
+ * @date 2018-12-13 22:09:57
+ */
+var os = {
+  getIp: function getIp() {
+    var ip = '';
+    var infaces = Os.networkInterfaces();
+
+    for (var i in infaces) {
+      var state = infaces[i].some(function (x) {
+        if (x.family === 'IPv4' && x.internal === false) {
+          ip = x.address;
+          return true;
+        }
+      });
+
+      if (state) {
+        return ip;
+      }
+    }
+
+    return ip;
+  }
+};
+
+/**
+ * @file net
+ * @author xiaozhihua
+ * @date 2018-12-13 22:16:00
+ */
+
+var GetAvailablePort = function GetAvailablePort() {
+  var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 9000;
+  var r = arguments.length > 1 ? arguments[1] : undefined;
+  return new Promise(function (resolve) {
+    var Server = Net.createServer().listen(port);
+    r = r || resolve;
+    Server.on('listening', function () {
+      Server.once('close', function () {
+        r(port);
+      });
+      Server.close();
+    });
+    Server.on('error', function (err) {
+      if (err.code === 'EADDRINUSE') {
+        GetAvailablePort(port + 1, r);
+      }
+    });
+  });
+};
+
+var net = {
+  getAvailablePort: GetAvailablePort
 };
 
 /**
@@ -36,3 +95,5 @@ var path = {
  */
 
 exports.Path = path;
+exports.Os = os;
+exports.Net = net;
