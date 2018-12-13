@@ -6,3 +6,4 @@
 
 export { default as Path } from './common/path'
 export { default as Os } from './common/os'
+export { default as Net } from './common/net'
