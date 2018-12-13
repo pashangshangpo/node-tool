@@ -13,7 +13,7 @@ export default {
   },
   exists(path) {
     return new Promise(resolve => {
-      Fs.stat(path, (err, stats) => {
+      Fs.stat(path, err => {
         resolve(err == null)
       })
     })
