@@ -18,5 +18,5 @@ yarn build
 ## 使用
 
 ```
-import xx from 'node-tool'
+import xx from 'n-tool'
 ```
