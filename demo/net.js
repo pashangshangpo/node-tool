@@ -1,4 +1,4 @@
-const { Net } = require('../dist/node-tool.cjs')
+const { Net } = require('../build/main')
 
 Net.getAvailablePort().then(port => {
   console.log(port)

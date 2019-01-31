@@ -1,3 +1,3 @@
-const { Os } = require('../dist/node-tool.cjs')
+const { Os } = require('../build/main')
 
 console.log(Os.getIp())

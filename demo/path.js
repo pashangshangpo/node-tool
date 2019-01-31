@@ -1,4 +1,4 @@
-const { Path } = require('../dist/node-tool.cjs')
+const { Path } = require('../build/main')
 
 console.log(Path.joinApp('package.json'))
 console.log(Path.joinApp('./package.json'))
